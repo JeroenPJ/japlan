@@ -1,0 +1,49 @@
+<h1>Create a new article</h1>
+<%= simple_form_for :article do |f| %>
+  <%= f.input "title" %>
+  <%= f.input "date" %>
+
+  <div id="contents">
+    <% i = 0 %>
+    <input name="contents[<%= i %>]" placeholder="Once upon a time...">
+  </div>
+  <p><a href="#" class="new-paragraph">New paragraph</a> | <a href="#" class="new-image">New image</a></p>
+
+  <%= f.submit "Save" %>
+<% end %>
+
+<% content_for(:after_js) do %>
+  <script>
+    function new_paragraph(i) {
+      $("#contents").append('<textarea name="contents[' + i + ']"></textarea>');
+    }
+
+    function new_image(i) {
+      $('#contents').append('<input name="contents[' + i + ']">');
+    }
+
+    function new_contents(type, i) {
+      if(type == "paragraph") {
+        new_paragraph(i);
+      } else {
+        new_image(i);
+      }
+
+      return i + 1;
+    }
+
+    $(function(){
+      var i = $('#contents').children().length;
+
+      $('.new-paragraph').click(function() {
+        console.log("New paragraph");
+        i = new_contents("paragraph", i);
+      });
+
+      $('.new-image').click(function() {
+        console.log("New image");
+        i = new_contents("image", i);
+      });
+    });
+  </script>
+<% end %>

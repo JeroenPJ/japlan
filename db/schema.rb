@@ -10,10 +10,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314224418) do
+ActiveRecord::Schema.define(version: 20170315222054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "articles", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "user_id"
+    t.string   "thumbnail"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date     "date"
+    t.index ["user_id"], name: "index_articles_on_user_id", using: :btree
+  end
+
+  create_table "contents", force: :cascade do |t|
+    t.integer  "index"
+    t.integer  "article_id"
+    t.string   "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_contents_on_article_id", using: :btree
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string   "src"
+    t.integer  "content_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_id"], name: "index_images_on_content_id", using: :btree
+  end
+
+  create_table "paragraphs", force: :cascade do |t|
+    t.text     "text"
+    t.integer  "content_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_id"], name: "index_paragraphs_on_content_id", using: :btree
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -32,4 +67,8 @@ ActiveRecord::Schema.define(version: 20170314224418) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "articles", "users"
+  add_foreign_key "contents", "articles"
+  add_foreign_key "images", "contents"
+  add_foreign_key "paragraphs", "contents"
 end
