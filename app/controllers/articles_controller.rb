@@ -48,9 +48,6 @@ class ArticlesController < ApplicationController
   end
 
   def get_article_params
-    @article_params = params[:article].permit(:title, :thumbnail, :date)
-    contents = params[:contents]
-    @content_params = []
-    contents.each { |n| @content_params << contents.permit(n)[nc] }
+    @article_params = params[:article].permit(:title, :thumbnail, :content, :date)
   end
 end

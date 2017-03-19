@@ -3,11 +3,7 @@
   <%= f.input "title" %>
   <%= f.input "date" %>
 
-  <div id="contents">
-    <% i = 0 %>
-    <input name="contents[<%= i %>]" placeholder="Once upon a time...">
-  </div>
-  <p><a href="#" class="new-paragraph">New paragraph</a> | <a href="#" class="new-image">New image</a></p>
+  <%= f.input "content", as: :ckeditor %>
 
   <%= f.submit "Save" %>
 <% end %>
